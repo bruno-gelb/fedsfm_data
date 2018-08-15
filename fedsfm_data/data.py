@@ -1,6 +1,27 @@
 import requests
 
 
+def place_to_region(place):
+    place = place.strip()
+    if 'ЧИАССР' in place:
+        region = 'Чечено-Ингушская ССР'
+    elif 'АССР' in place and 'ЧИАССР' not in place:
+        region = 'Азербайджанская ССР'
+    elif 'ДАГЕСТАН' in place:
+        region = 'Дагестан'
+    elif 'Чечен' in place or 'чечен' in place or 'ЧЕЧЕН' in place:
+        region = 'Чечня'
+    elif 'КАБАРДИН' in place:
+        region = 'Кабардино-Балкария'
+    elif 'БАШКОРТОСТАН' in place:
+        region = 'Башкортостан'
+    elif 'ТАТАРС' in place:
+        region = 'Татарстан'
+    else:
+        region = 'undefined'
+    return region
+
+
 def strings_to_dicts(strings_list):
     dicts_list = []
     for entry in strings_list:
@@ -15,7 +36,8 @@ def strings_to_dicts(strings_list):
                 'number': int(number),
                 'fullname': fullname.strip(),
                 'birthday': birthday.strip(),
-                'place': place.strip()
+                'place': place.strip(),
+                'region': place_to_region(place)
             }
 
             dicts_list.append(entry_dict)
