@@ -1,6 +1,20 @@
 import requests
 
 
+def strings_to_dicts(strings_list):
+    dicts_list = []
+    for entry in strings_list:
+        number, data = entry.split('.', 1)
+
+        entry_dict = {
+            'number': int(number)
+        }
+
+        dicts_list.append(entry_dict)
+
+    return dicts_list
+
+
 def gather():
     url = 'http://fedsfm.ru/documents/terrorists-catalog-portal-act'
     response = requests.get(url)
@@ -16,4 +30,9 @@ def gather():
 
     assert 8000 < len(clean_list) < 10000
 
-    return clean_list
+    dicts_list = strings_to_dicts(clean_list)
+
+    assert len(dicts_list) == len(clean_list)
+    assert isinstance(dicts_list[0], dict)
+
+    return dicts_list

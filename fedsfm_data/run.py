@@ -1,4 +1,9 @@
+import json
+
 from data import gather
 
 if __name__ == "__main__":
-    gather()
+    data = gather()
+    
+    with open("data.json", "w") as f:
+        json.dump(data, f)
