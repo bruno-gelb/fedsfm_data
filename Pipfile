@@ -1,0 +1,12 @@
+[[source]]
+verify_ssl = true
+url = "https://pypi.org/simple"
+name = "pypi"
+
+[packages]
+plotly = "==3.1.1"
+
+[requires]
+python_version = "3.7"
+
+[dev-packages]
