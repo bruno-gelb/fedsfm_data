@@ -10,15 +10,15 @@ def strings_to_dicts(strings_list):
             fullname, birthday, place = data.split(',')
         except ValueError:
             pass  # todo handle cases when there's more than 2 commas
+        else:
+            entry_dict = {
+                'number': int(number),
+                'fullname': fullname.strip(),
+                'birthday': birthday.strip(),
+                'place': place.strip()
+            }
 
-        entry_dict = {
-            'number': int(number),
-            'fullname': fullname.strip(),
-            'birthday': birthday.strip(),
-            'place': place.strip()
-        }
-
-        dicts_list.append(entry_dict)
+            dicts_list.append(entry_dict)
 
     return dicts_list
 
@@ -40,7 +40,6 @@ def gather():
 
     dicts_list = strings_to_dicts(clean_list)
 
-    assert len(dicts_list) == len(clean_list)
     assert isinstance(dicts_list[0], dict)
 
     return {'count': len(dicts_list),
