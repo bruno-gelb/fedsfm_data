@@ -6,8 +6,16 @@ def strings_to_dicts(strings_list):
     for entry in strings_list:
         number, data = entry.split('.', 1)
 
+        try:
+            fullname, birthday, place = data.split(',')
+        except ValueError:
+            pass  # todo handle cases when there's more than 2 commas
+
         entry_dict = {
-            'number': int(number)
+            'number': int(number),
+            'fullname': fullname.strip(),
+            'birthday': birthday.strip(),
+            'place': place.strip()
         }
 
         dicts_list.append(entry_dict)
@@ -35,4 +43,5 @@ def gather():
     assert len(dicts_list) == len(clean_list)
     assert isinstance(dicts_list[0], dict)
 
-    return dicts_list
+    return {'count': len(dicts_list),
+            'entries': dicts_list}
