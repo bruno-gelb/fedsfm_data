@@ -10,7 +10,10 @@ def gather():
 
     raw = response.content.decode('utf-8')
 
-    as_list = raw.split('<li>')
+    as_list = raw.split('Российские физические лица')[1].split('<li>')
 
-    assert 8000 < len(as_list) < 10000
-    return as_list
+    clean_list = [x for x in as_list if '. ' in x]
+
+    assert 8000 < len(clean_list) < 10000
+
+    return clean_list
