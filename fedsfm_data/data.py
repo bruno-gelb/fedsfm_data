@@ -1,3 +1,6 @@
+import math
+from datetime import datetime
+
 import requests
 
 
@@ -75,13 +78,24 @@ def strings_to_dicts(strings_list):
             fullname = fullname[:-1]
             is_terrorist = True
 
+        birthday = clean_birthday(birthday)
+        try:
+            birthday_dt = datetime.strptime(birthday, '%d.%m.%Y')
+        except ValueError:
+            age = None
+        else:
+            # todo improve age calc, this is not 100% correct
+            age = math.floor(
+                (datetime.now() - birthday_dt).days / 365
+            )
+
         entry_dict = {
             'number': int(number),
             'fullname': fullname,
             'old_fullname': old_fullname.strip() if old_fullname else None,
             'is_terrorist': is_terrorist,
-            'birthday': clean_birthday(birthday),
-            'age': None,  # todo
+            'birthday': birthday,
+            'age': age,
             'gender': None,  # todo
             'place': place.strip() if place else None,
             'region': place_to_region(place)
