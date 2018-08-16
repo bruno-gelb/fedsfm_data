@@ -1,6 +1,15 @@
 import requests
 
 
+def clean_birthday(raw_birthday):
+    birthday = raw_birthday. \
+        strip(). \
+        replace('г.р. ;', ''). \
+        replace('г.р.', '')
+
+    return birthday.strip()
+
+
 def place_to_region(place):
     place = place.strip()
 
@@ -64,7 +73,7 @@ def strings_to_dicts(strings_list):
             'number': int(number),
             'fullname': fullname.strip(),
             'old_fullname': old_fullname,
-            'birthday': birthday.strip(),
+            'birthday': clean_birthday(birthday),
             'place': place.strip() if place else None,
             'region': place_to_region(place)
         }
