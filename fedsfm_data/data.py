@@ -94,6 +94,9 @@ def strings_to_dicts(strings_list):
         if old_fullname:
             old_fullname = old_fullname.strip()[1:-1]
 
+        if place:
+            place = place.strip()[:-1]
+
         entry_dict = {
             'number': int(number),
             'fullname': fullname,
@@ -102,7 +105,7 @@ def strings_to_dicts(strings_list):
             'birthday': birthday,
             'age': age,
             'gender': None,  # todo
-            'place': place.strip() if place else None,
+            'place': place if place else None,
             'region': place_to_region(place)
         }
 
