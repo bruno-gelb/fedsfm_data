@@ -3,7 +3,7 @@ from datetime import datetime
 
 import requests
 
-from geo import place_to_region
+from .geo import place_to_region
 
 
 def clean_birthday(raw_birthday):

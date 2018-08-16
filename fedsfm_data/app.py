@@ -1,14 +1,11 @@
 from flask import Flask, render_template
-
+from .data import gather
 import json
 import plotly
 import pandas as pd
-import numpy as np
 
 app = Flask(__name__)
 app.debug = True
-
-from .data import gather
 
 
 @app.route('/')
@@ -17,6 +14,9 @@ def index():
     entries_df = pd.DataFrame(data=data['entries'])
     entries_df = entries_df.drop(columns=['place', 'fullname', 'birthday', 'number'])
     entries_df = entries_df[entries_df['region'] != 'undefined']
+    entries_df['bin'] = pd.cut(entries_df['age'], [15, 20, 25, 30, 35, 40],
+                               labels=['15-20', '20-25', '25-30', '30-35', '35-40'])
+    age_bins = entries_df['bin'].value_counts()
     region_counts = entries_df['region'].value_counts()
     anchors = region_counts.index
 
@@ -26,9 +26,19 @@ def index():
                 dict(
                     y=region_counts,
                     x=anchors,
-                    text=region_counts,
+                    text=list(region_counts),
                     name='Регионы',
-                    hoverinfo='label+value+name',
+                    type='bar'
+                )
+            ]
+        ),
+        dict(
+            data=[
+                dict(
+                    y=age_bins,
+                    x=age_bins.index,
+                    text=list(age_bins),
+                    name='Возраст',
                     type='bar'
                 )
             ]
