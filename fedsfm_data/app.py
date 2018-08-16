@@ -14,16 +14,22 @@ from .data import gather
 @app.route('/')
 def index():
     data = gather()
-    entries_df = pd.DataFrame(data=data["entries"])
-    entries_df = entries_df.drop(columns=["place", "fullname", "birthday", "number"])
-    entries_df = entries_df.groupby(['region']).sum()
+    entries_df = pd.DataFrame(data=data['entries'])
+    entries_df = entries_df.drop(columns=['place', 'fullname', 'birthday', 'number'])
+    entries_df = entries_df[entries_df['region'] != 'undefined']
+    region_counts = entries_df['region'].value_counts()
+    anchors = region_counts.index
+
     graphs = [
         dict(
             data=[
                 dict(
-                    x=entries_df.index,  # Can use the pandas data structures directly
-                    y=entries_df,
-                    type="bar"
+                    y=region_counts,
+                    x=anchors,
+                    text=region_counts,
+                    name='Регионы',
+                    hoverinfo='label+value+name',
+                    type='bar'
                 )
             ]
         )
@@ -31,7 +37,7 @@ def index():
 
     # Add "ids" to each of the graphs to pass up to the client
     # for templating
-    ids = ['graph-{}'.format(i) for i, _ in enumerate(graphs)]
+    ids = [d['data'][0]['name'] for i, d in enumerate(graphs)]
 
     # Convert the figures to JSON
     # PlotlyJSONEncoder appropriately converts pandas, datetime, etc
