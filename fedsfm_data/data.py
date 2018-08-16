@@ -52,7 +52,7 @@ def place_to_region(place):
 def strings_to_dicts(strings_list):
     dicts_list = []
     for entry in strings_list:
-        old_fullname = None
+        old_fullname = ''
         place = ''
         number, data = entry.split('.', 1)
 
@@ -72,7 +72,7 @@ def strings_to_dicts(strings_list):
         entry_dict = {
             'number': int(number),
             'fullname': fullname.strip(),
-            'old_fullname': old_fullname,
+            'old_fullname': old_fullname.strip() if old_fullname else None,
             'birthday': clean_birthday(birthday),
             'place': place.strip() if place else None,
             'region': place_to_region(place)
