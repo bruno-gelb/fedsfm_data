@@ -36,29 +36,40 @@ def place_to_region(place):
         region = 'Москва'
     else:
         region = 'undefined'
-        
+
     return region
 
 
 def strings_to_dicts(strings_list):
     dicts_list = []
     for entry in strings_list:
+        old_fullname = None
+        place = ''
         number, data = entry.split('.', 1)
 
-        try:
-            fullname, birthday, place = data.split(',')
-        except ValueError:
-            pass  # todo handle cases when there's more than 2 commas
+        if ', (' in data or ',  (' in data:
+            splitted = data.split(',', 3)
+            if len(splitted) == 4:
+                fullname, old_fullname, birthday, place = splitted
+            else:
+                fullname, old_fullname, birthday = splitted
         else:
-            entry_dict = {
-                'number': int(number),
-                'fullname': fullname.strip(),
-                'birthday': birthday.strip(),
-                'place': place.strip(),
-                'region': place_to_region(place)
-            }
+            splitted = data.split(',', 2)
+            if len(splitted) == 3:
+                fullname, birthday, place = splitted
+            else:
+                fullname, birthday = splitted
 
-            dicts_list.append(entry_dict)
+        entry_dict = {
+            'number': int(number),
+            'fullname': fullname.strip(),
+            'old_fullname': old_fullname,
+            'birthday': birthday.strip(),
+            'place': place.strip() if place else None,
+            'region': place_to_region(place)
+        }
+
+        dicts_list.append(entry_dict)
 
     return dicts_list
 
@@ -80,6 +91,7 @@ def gather():
 
     dicts_list = strings_to_dicts(clean_list)
 
+    assert len(clean_list) == len(dicts_listq)
     assert isinstance(dicts_list[0], dict)
 
     return {'count': len(dicts_list),
