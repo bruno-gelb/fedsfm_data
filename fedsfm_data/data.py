@@ -81,6 +81,8 @@ def strings_to_dicts(strings_list):
             'old_fullname': old_fullname.strip() if old_fullname else None,
             'is_terrorist': is_terrorist,
             'birthday': clean_birthday(birthday),
+            'age': None,  # todo
+            'gender': None,  # todo
             'place': place.strip() if place else None,
             'region': place_to_region(place)
         }
