@@ -2,51 +2,28 @@ from flask import Flask, render_template
 
 import json
 import plotly
-
 import pandas as pd
 import numpy as np
 
 app = Flask(__name__)
 app.debug = True
 
+from .data import gather
+
 
 @app.route('/')
 def index():
-    rng = pd.date_range('1/1/2011', periods=7500, freq='H')
-    ts = pd.Series(np.random.randn(len(rng)), index=rng)
-
+    data = gather()
+    entries_df = pd.DataFrame(data=data["entries"])
+    entries_df = entries_df.drop(columns=["place", "fullname", "birthday", "number"])
+    entries_df = entries_df.groupby(['region']).sum()
     graphs = [
         dict(
             data=[
                 dict(
-                    x=[1, 2, 3],
-                    y=[10, 20, 30],
-                    type='scatter'
-                ),
-            ],
-            layout=dict(
-                title='first graph'
-            )
-        ),
-
-        dict(
-            data=[
-                dict(
-                    x=[1, 3, 5],
-                    y=[10, 50, 30],
-                    type='bar'
-                ),
-            ],
-            layout=dict(
-                title='second graph'
-            )
-        ),
-
-        dict(
-            data=[
-                dict(
-                    x=ts.index,  # Can use the pandas data structures directly
-                    y=ts
+                    x=entries_df.index,  # Can use the pandas data structures directly
+                    y=entries_df,
+                    type="bar"
                 )
             ]
         )
