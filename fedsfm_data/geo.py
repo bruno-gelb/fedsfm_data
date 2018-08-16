@@ -12,7 +12,6 @@ def place_to_region(place):
     r = requests.get('http://kladr-api.ru/api.php', params=payload)
     query_results = r.json()
     if len(query_results["result"]) > 0:
-        print(query_results["result"][0])
         try:
             parents = query_results["result"][0]["parents"]
             if len(parents) > 0:
