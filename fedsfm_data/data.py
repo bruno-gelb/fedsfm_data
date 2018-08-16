@@ -91,10 +91,13 @@ def strings_to_dicts(strings_list):
                 (datetime.now() - birthday_dt).days / 365
             )
 
+        if old_fullname:
+            old_fullname = old_fullname.strip()[1:-1]
+
         entry_dict = {
             'number': int(number),
             'fullname': fullname,
-            'old_fullname': old_fullname.strip() if old_fullname else None,
+            'old_fullname': old_fullname if old_fullname else None,
             'is_terrorist': is_terrorist,
             'birthday': birthday,
             'age': age,

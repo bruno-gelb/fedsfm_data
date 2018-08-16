@@ -25,7 +25,7 @@ You will get a list with entries like this:
 {
     "number": 5244,
     "fullname": "МУДАТОВ ШАМХАЛ ДЖАЛУЕВИЧ",
-    "old_fullname": "(МУДАТОВ ШАМХАН ДЖАЛУЕВИЧ)",
+    "old_fullname": "МУДАТОВ ШАМХАН ДЖАЛУЕВИЧ",
     "is_terrorist": true,
     "birthday": "24.05.1972",
     "age": 46,
