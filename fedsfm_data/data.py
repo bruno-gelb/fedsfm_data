@@ -44,6 +44,8 @@ def place_to_region(place):
         region = 'Узбекистан'
     elif 'ЧЕЛЯБИН' in place:
         region = 'Челябинская область'
+    elif 'АЛТАЙ' in place:
+        region = 'Алтайский край'
     elif 'МОСКОВ' in place or 'МОСКВ' in place:
         region = 'Москва'
     else:
