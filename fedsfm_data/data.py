@@ -91,7 +91,7 @@ def gather():
 
     dicts_list = strings_to_dicts(clean_list)
 
-    assert len(clean_list) == len(dicts_listq)
+    assert len(clean_list) == len(dicts_list)
     assert isinstance(dicts_list[0], dict)
 
     return {'count': len(dicts_list),
