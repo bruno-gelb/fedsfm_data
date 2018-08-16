@@ -69,10 +69,17 @@ def strings_to_dicts(strings_list):
             else:
                 fullname, birthday = splitted
 
+        fullname = fullname.strip()
+        is_terrorist = False
+        if '*' in fullname:
+            fullname = fullname[:-1]
+            is_terrorist = True
+
         entry_dict = {
             'number': int(number),
-            'fullname': fullname.strip(),
+            'fullname': fullname,
             'old_fullname': old_fullname.strip() if old_fullname else None,
+            'is_terrorist': is_terrorist,
             'birthday': clean_birthday(birthday),
             'place': place.strip() if place else None,
             'region': place_to_region(place)
