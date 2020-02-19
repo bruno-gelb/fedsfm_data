@@ -1,37 +1,26 @@
-def place_to_region(place):
-    if 'ЧИАССР' in place:
-        region = 'Чечено-Ингушская ССР'
-    elif 'АССР' in place and 'ЧИАССР' not in place:
-        region = 'Азербайджанская ССР'
-    elif 'ДАГЕСТАН' in place:
-        region = 'Дагестан'
-    elif 'Чечен' in place or 'чечен' in place or 'ЧЕЧЕН' in place:
-        region = 'Чечня'
-    elif 'ИНГУШЕТИЯ' in place:
-        region = 'Ингушетия'
-    elif 'КАБАРДИН' in place or ' КБР' in place:
-        region = 'Кабардино-Балкария'
-    elif 'СТАВРОПОЛЬ' in place:
-        region = 'Ставропольский край'
-    elif 'БАШКОРТОСТАН' in place:
-        region = 'Башкортостан'
-    elif 'ТАДЖИК' in place:
-        region = 'Таджикистан'
-    elif 'ТАТАРС' in place:
-        region = 'Татарстан'
-    elif 'КЫРГЫЗ' in place or 'КИРГИЗ' in place:
-        region = 'Киргизия'
-    elif 'КАЗАХ' in place:
-        region = 'Казахстан'
-    elif 'УЗБЕК' in place:
-        region = 'Узбекистан'
-    elif 'ЧЕЛЯБИН' in place:
-        region = 'Челябинская область'
-    elif 'АЛТАЙ' in place:
-        region = 'Алтайский край'
-    elif 'МОСКОВ' in place or 'МОСКВ' in place:
-        region = 'Москва'
-    else:
-        region = 'undefined'
+import requests
 
+
+def place_to_region(place):
+    if len(place) > 1 and len(place.split(' ')) > 1:
+        city = place.split(' ')[1]
+    else:
+        city = ''
+
+    payload = {'query': city, 'withParent': '1', 'contentType': 'city', 'limit': '1'}
+
+    r = requests.get('http://kladr-api.ru/api.php', params=payload)
+    query_results = r.json()
+    if len(query_results["result"]) > 0:
+        try:
+            parents = query_results["result"][0]["parents"]
+            if len(parents) > 0:
+                parent = parents[0]
+                region = f'{parent["name"]} {parent["type"]}'
+            else:
+                region = "undefined"
+        except KeyError:
+            region = "undefined"
+    else:
+        region = "undefined"
     return region

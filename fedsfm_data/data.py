@@ -1,6 +1,6 @@
 import math
-from datetime import datetime
-
+from datetime import datetime, timedelta
+import pickle
 import requests
 
 from .geo import place_to_region
@@ -76,6 +76,12 @@ def strings_to_dicts(strings_list):
 
 
 def gather():
+
+    with open('entries.pickle', 'rb') as handle:
+        entries = pickle.load(handle)
+    if entries['date_saved'] > (datetime.now() - timedelta(hours=24)):
+        return entries
+
     url = 'http://fedsfm.ru/documents/terrorists-catalog-portal-act'
     response = requests.get(url)
 
@@ -95,5 +101,9 @@ def gather():
     assert len(clean_list) == len(dicts_list)
     assert isinstance(dicts_list[0], dict)
 
-    return {'count': len(dicts_list),
-            'entries': dicts_list}
+    entries = dict(count=len(dicts_list), date_saved=datetime.utcnow(), entries=dicts_list)
+
+    with open('entries.pickle', 'wb') as handle:
+        pickle.dump(entries, handle, protocol=pickle.HIGHEST_PROTOCOL)
+
+    return entries
